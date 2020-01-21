@@ -59,5 +59,28 @@ Client.on('message', message => {
 	// }
 });
 
+
+var isReady = true;
+Client.on('voiceStateUpdate', (oldMember, newMember) => {
+	let newUserChannel = newMember.voiceChannel;
+	let oldUserChannel = oldMember.voiceChannel;
+	if(oldUserChannel === undefined && newUserChannel !== undefined) {
+		// User Joins a voice channel
+		if (isReady){
+			isReady = false;
+			// var voiceChannel = message.member.voiceChannel;
+			newUserChannel.join().then(connection =>{
+				const dispatcher = connection.playFile('./audio/Fuck_society.wav');
+				dispatcher.on("end", end => { newUserChannel.leave(); });
+			}).catch(err => console.log(err));
+			isReady = true;
+		}
+	} else if(newUserChannel === undefined){
+
+		// User leaves a voice channel
+
+	}
+});
+
 // login to Discord with your app's token
 Client.login(Config.token);

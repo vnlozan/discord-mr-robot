@@ -1,4 +1,8 @@
-FROM node:8.15.0-jessie
+# FROM node:8.15.0-jessie
+FROM node:13.6.0-stretch
+
+RUN apt-get -y update
+RUN apt-get -y install ffmpeg
 
 RUN mkdir -p /usr/src/bot
 WORKDIR /usr/src/bot
