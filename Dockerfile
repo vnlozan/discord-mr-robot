@@ -1,29 +1,24 @@
-# FROM node:8.15.0-jessie
 FROM node:13.6.0-stretch
+# FROM node:8.15.0-jessie
+# FROM nikolaik/python-nodejs:python3.6-nodejs10-stretch
 
 RUN apt-get -y update
+RUN apt-get install python
 RUN apt-get -y install ffmpeg
+RUN mkdir -p /usr/local/src/mr-robot
 
-RUN mkdir -p /usr/src/mr-robot
-WORKDIR /usr/src/mr-robot
+WORKDIR /usr/local/src/mr-robot
+COPY package.json /usr/local/src/mr-robot
+RUN npm install axios
+RUN npm install node-html-parser
+RUN npm install discord.js
+RUN npm install ffmpeg
+RUN npm install opusscript
+RUN npm install ytdl-core
+# RUN npm install node-opus
 
-# This will tell docker to create a directory inside the container called bot 
-# and then will tell docker that the bot folder is the working directory where all the main code will be.
-# Copy and Install our bot
-
-COPY package.json /usr/src/mr-robot
-
-RUN npm install
-
-COPY . /usr/src/mr-robot
-
-# This will tell docker to copy the package.json file over to the container 
-# and then run npm install which will run all of the packages the bot needs in order to run correctly
-
-# Our precious bot
-COPY . /usr/src/mr-robot
-
-# Start me!
+COPY . /usr/local/src/mr-robot
+# COPY . .
 CMD ["node", "index.js"]
 
 
@@ -36,5 +31,3 @@ CMD ["node", "index.js"]
 # docker rmi {image_id} #remove image
 
 # shutdown -h now
-
-# https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/v2v_guide/preparation_before_the_p2v_migration-enable_root_login_over_ssh

@@ -10,9 +10,5 @@
   "author": "Vladlen Lozan",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.1",
-    "discord.js": "^11.5.1",
-    "ffmpeg-binaries": "^3.2.2-3",
-    "node-html-parser": "^1.1.18"
   }
 }

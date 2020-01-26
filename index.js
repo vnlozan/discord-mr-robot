@@ -14,13 +14,13 @@ for (const file of commandFiles) {
 
 const cooldowns = new Discord.Collection();
 
-// Client.once('ready', () => {
-//     Client.channels.get('666716841716088843').send('Hello, friend!', {
-// 		files: [
-// 			"./assets/hello_friend.jpg"
-// 		]
-// 	})
-// });
+Client.once('ready', () => {
+    Client.channels.get('666716841716088843').send('Hello, friend!', {
+		files: [
+			"./assets/hello_friend.jpg"
+		]
+	})
+});
 
 Client.on('message', message => {
 	if (!message.content.startsWith(Config.prefix) || message.author.bot) return;
@@ -32,7 +32,6 @@ Client.on('message', message => {
 	// if (command.guildOnly && message.channel.type !== 'text') {
 	// 	return message.reply('I can\'t execute that command inside DMs!');
 	// }
-
 	if (command.args && !args.length) {
 		let reply = `You didn't provide any arguments, ${message.author}!`;
 		if (command.usage) {
@@ -40,47 +39,26 @@ Client.on('message', message => {
 		}
 		return message.channel.send(reply);
 	}
-
 	try { command.execute(message, args); } 
 	catch (error) {
 		console.error(error);
 		message.reply('there was an error trying to execute that command!');
 	}
-
-
-	// if(command === 'vladpisos'){
-	// 	message.channel.send('Nah, shibarpisos!');
-	// }
-    // if (command === 'dota2'){
-    //     message.channel.send('In development');
-    // }
-	// if (command === 'ping') {
-	// 	message.channel.send('Pong.');
-	// }
 });
-
 
 var isReady = true;
 Client.on('voiceStateUpdate', (oldMember, newMember) => {
 	let newUserChannel = newMember.voiceChannel;
 	let oldUserChannel = oldMember.voiceChannel;
-	if(oldUserChannel === undefined && newUserChannel !== undefined) {
-		// User Joins a voice channel
-		if (isReady){
-			isReady = false;
-			// var voiceChannel = message.member.voiceChannel;
-			newUserChannel.join().then(connection =>{
-				const dispatcher = connection.playFile('./audio/Fuck_society.wav');
-				dispatcher.on("end", end => { newUserChannel.leave(); });
-			}).catch(err => console.log(err));
-			isReady = true;
-		}
-	} else if(newUserChannel === undefined){
-
-		// User leaves a voice channel
-
+	if(oldUserChannel === undefined && newUserChannel !== undefined && isReady) {
+		isReady = false;
+		newUserChannel.join().then(connection =>{
+			const dispatcher = connection.playFile(require("path").join(__dirname, './audio/you_re_asking_the_impossible.wav'));
+			// const dispatcher = connection.playFile('./audio/figurine-isp.mp3');
+			dispatcher.on("end", end => { newUserChannel.leave(); });
+		}).catch(err => console.log(err));
+		isReady = true;
 	}
 });
 
-// login to Discord with your app's token
 Client.login(Config.token);
