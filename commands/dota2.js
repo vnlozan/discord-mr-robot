@@ -11,7 +11,15 @@ module.exports = {
         if(args.length === 1){
             switch(args[0]){
                 case 'heroes' : { 
-                    message.channel.send('The list of hero ids...'); return; 
+                    const heroes = config.dota2.heroes;
+                    var response = ''; 
+                    const exampleEmbed = new Discord.RichEmbed().setColor('#0099ff').setTitle('Dota2 heroes');
+                    heroes.forEach(element => {
+                        response += `${element} `;
+                    });
+                    exampleEmbed.setDescription(response);
+                    message.channel.send(exampleEmbed);
+                    return; 
                 }
                 default: { message.channel.send('Type the proper command, please!'); return; }
             }
@@ -35,7 +43,6 @@ module.exports = {
                 const root = HTMLParser.parse(response.data);
                 const data = root.querySelector('.counter-outline').childNodes;
                 const heroes = data[1].childNodes[0].childNodes[1].childNodes;
-                var response = '';
                 hero = hero.charAt(0).toUpperCase() + hero.slice(1);
                 const exampleEmbed = new Discord.RichEmbed()
                     .setColor('#0099ff')
@@ -49,7 +56,7 @@ module.exports = {
                     const winrate = hero[3].rawAttrs.match(new RegExp('(?:data-value="(.+)")'))[1];
                     exampleEmbed.addField( counterpickHero, `Disadvantage : ${disadvantage}. Winrate : ${winrate}` );
                 });
-                exampleEmbed.setDescription(response)
+                // exampleEmbed.setDescription(response);
                 exampleEmbed.setFooter(`Dotabuff info`);
                 message.channel.send(exampleEmbed);
             })
